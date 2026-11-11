@@ -1,0 +1,29 @@
+# DAYV-X: builds the firmware on every push with the FM-1 community's shared workflow (zvenson/fm1-build).
+# The package (build/*.fwsc) is attached to the run as the artifact "packages".
+name: build
+on:
+  push:
+    branches: [main, dayvx]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  firmware:
+    uses: zvenson/fm1-build/.github/workflows/build.yml@v1
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    with:
+      build: git submodule update --init && ./build.sh
+      packages: build/*.fwsc
+  drift-host:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683   # v4.2.2
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: DRIFT on the host (renders against tests/dayvx/drift_golden.txt)
+        run: sh tests/dayvx/run.sh

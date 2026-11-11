@@ -1,0 +1,15 @@
+# DAYV-X: a tag vX.Y builds, attests and publishes the release package (zvenson/fm1-build).
+name: release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  build:
+    uses: zvenson/fm1-build/.github/workflows/build.yml@v1
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    with:
+      build: git submodule update --init && ./build.sh --release "${GITHUB_REF_NAME#v}"
+      packages: build/*.fwsc
