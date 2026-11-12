@@ -1,0 +1,7 @@
+{
+  "what": "A four-part groovebox for hazy, worn-tape music: DRIFT, a synth whose pitch never sits still, AGE, a tape stage with wow, flutter and hiss on the whole mix, a dusty synthesised drum kit with a GRIT control, FM bells and acid basses. Built on Felucca.",
+  "author": "Repoman",
+  "kinds": ["groove", "synth"],
+  "image": "docs/dayvx-card.png",
+  "color": "#68B6AC"
+}

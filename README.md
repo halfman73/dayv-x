@@ -11,8 +11,8 @@ its controls, pages and shortcuts apply here unchanged unless this page says oth
 DAYV-X is not affiliated with or endorsed by M-VAVE or Hügelton Instruments. Please report DAYV-X problems to this
 repository, not to Felucca.
 
-**Status: v0.1, pre-release.** It has been run in emulators and passes Felucca's host tests. It has not yet been
-run on a real FM-1. Installing custom firmware is at your own risk.
+**Status: v0.1.1.** It passes Felucca's host tests and has been run on a real FM-1: all four parts playing with
+WEAR at 80 used about 55 % of the CPU, with no dropouts. Installing custom firmware is at your own risk.
 
 ## What DAYV-X adds
 
@@ -101,7 +101,8 @@ Program Change picks a part's preset. Felucca's MIDI LEARN assigns other control
 4. If the unit does not start, hold OCT- while switching it on and install again. M-VAVE's own updater returns it
    to the official firmware.
 
-DAYV-X identifies itself as `FM-1_947`. While an update is running the loader reports `ota-FM-1_900`, as
+DAYV-X identifies itself as `FM-1_938` followed by its version as six digits (0.1.1 is `FM-1_938000101`; a
+development build ends in `000000`). While an update is running the loader reports `ota-FM-1_900`, as
 Felucca's does. Projects and settings use Felucca's formats.
 
 ## Build and test
