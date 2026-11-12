@@ -12,7 +12,7 @@ DAYV-X problems to this repository, not to Felucca.
 
 | File | What |
 | --- | --- |
-| `firmware/src/eng_drift.c` | DRIFT: the pad / lead engine (two oscillators, sub, low-pass; a fixed offset and a random walk of pitch per voice, wow and flutter per part). Not yet in the firmware's engine table |
+| `firmware/src/eng_drift.c` | DRIFT: the pad / lead engine (two oscillators, sub, low-pass; a fixed pitch offset per note, a detune LFO per voice (DRFT its depth, RATE its speed), wow and flutter per part). Engine 14, last in the PRESETS order, picked with the ENG knob |
 | `tests/dayvx/drift_host.c`, `run.sh` | DRIFT on a computer: `WAV=out sh tests/dayvx/run.sh` writes one WAV per preset |
 | `.github/workflows/dayvx-build.yml` | every push: the firmware package built on GitHub (artifact `packages`), and the DRIFT host test |
 | `.github/workflows/dayvx-release.yml` | a tag `vX.Y`: the release package, attested |

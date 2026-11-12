@@ -1687,7 +1687,7 @@ function makeMockDevice(opt = {}) {
     E("MIDI", ["USB", "TRS"], 0), E("SYNC", NDASH, 0), E("ROUT", ["CH1-4", "SEL", "CH5-8", "CH9-12", "CH13-16", "TRACK"], 0), D("CPU", F.INT, 0, 0, 0),
     D("SLOT", F.INT, 1, 4, 1), E("NAME", NDASH, 0), E("LOAD", NGO, 0), E("SAVE", NGO, 0),
     E("ENG", ["ANALOG", "-", "PHASE", "LOFI", "SAMPLE", "VOICE", "TRIO", "WHEEL",
-      "GRAIN", "PHYS", "DRUM", "NOISE", "FM6", "SLICE"], 0), E("SET", NGO, 0),
+      "GRAIN", "PHYS", "DRUM", "NOISE", "FM6", "SLICE", "DRIFT"], 0), E("SET", NGO, 0),
     E("CLRSQ", NGO, 0), E("INIT", NGO, 0),
     E("TYPE", ["ROOM", "SPRING", "HALL"], 2),       /* G_RTYPE (id 24, was G_DRCH): the reverb's model (HALL: 1.2) */
     D("-", F.INT, 0, 0, 0), D("-", F.INT, 0, 0, 0),   /* G_DRLVL, G_DRREV: inert since 1.0 */
@@ -1774,6 +1774,14 @@ function makeMockDevice(opt = {}) {
         E("DIV", ["4", "8", "16", "32", "AUTO", "MAN"], 2), D("START", F.INT, 0, 31, 0), D("PTCH", F.SEMI, -24, 24, 0),
         E("MODE", ["ONE", "GATE", "LOOP"], 0), E("REV", ["OFF", "ON"], 0), D("DCAY", F.TIME, 0, 127, 127), D("TONE", F.INT, 0, 127, 127)],
       presets: [P("CHOP", [0, 2, 0, 0, 0, 0, 127, 127], [0, 127, 127, 30], 0, 9), P("STUTTER", [0, 1, 0, 0, 1, 0, 90, 110], [0, 127, 127, 12], 0, 10)] },
+    /* 14: DRIFT (DAYV-X, src/eng_drift.c) */
+    { name: "DRIFT", titles: ["OSC", "TONE"], edit: [E("WAVE", ["SAW", "PLS", "TRI", "S+P"], 0), D("DTN", F.INT, 0, 127, 14, null, "ct"),
+        D("DRFT", F.PCT, 0, 127, 60), D("RATE", F.INT, 0, 127, 38), D("CUT", F.CUTOFF, 0, 127, 64), D("RES", F.PCT, 0, 127, 18),
+        D("SUB", F.PCT, 0, 127, 0), D("WOW", F.PCT, 0, 127, 45)],
+      presets: [P("SUNFADE", [0, 14, 60, 38, 50, 14, 20, 45], [70, 90, 105, 95], 0, 5), P("OLD FILM", [3, 18, 85, 52, 55, 25, 0, 80], [55, 85, 100, 90], 0, 5),
+        P("TV KEYS", [2, 9, 50, 60, 78, 10, 0, 55], [2, 75, 40, 60], 0, 6), P("WARBLE", [1, 6, 100, 88, 70, 35, 0, 100], [10, 70, 90, 55], 1, 4),
+        P("DUSK PAD", [0, 24, 75, 20, 48, 12, 45, 35], [95, 95, 115, 105], 0, 5), P("HAZE LD", [3, 11, 65, 72, 84, 40, 0, 60], [4, 65, 85, 50], 1, 4),
+        P("SUB DRFT", [2, 4, 35, 30, 44, 20, 90, 25], [0, 60, 100, 30], 1, 2), P("REEL STR", [1, 20, 80, 45, 66, 15, 10, 70], [75, 90, 110, 95], 0, 5)] },
   ];
   const FM6_E = ENG.findIndex((e) => e.name === "FM6"), FM6_OWN = FM6.FACTORY_PK.length, DRUM_E = ENG.findIndex((e) => e.name === "DRUM");
   /* factory PATTERNS[] (engines.c; the device loads them from SAVE > PHRASES, presets only suggest one): absolute
@@ -2428,7 +2436,7 @@ function enumShown(d) {
    the engine numbers. engineOrder(names): the indices of names in that order, "-" (a reserved number) left out; a name
    the list does not know (another firmware) follows in index order */
 const ENGINE_ORDER = ["ANALOG", "FM6", "DIGITAL", "PHASE", "LOFI", "SAMPLE", "VOICE", "TRIO", "WHEEL", "GRAIN", "PHYS", "NOISE",
-  "SLICE", "DRUM"];
+  "SLICE", "DRUM", "DRIFT"];
 function engineOrder(names) {
   const rank = (n) => { const k = ENGINE_ORDER.indexOf(n); return k < 0 ? ENGINE_ORDER.length : k; };
   return (names || []).map((n, i) => i).filter((i) => names[i] !== "-")

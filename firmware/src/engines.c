@@ -44,6 +44,9 @@ static uint8_t eng_mem_owner[NPART];       /* engine index + 1 whose state is in
 #if FELUCCA_SLICE
 #include "eng_slice.c"
 #endif
+#if FELUCCA_DRIFT
+#include "eng_drift.c"           /* DAYV-X: DRIFT, the hazy pad / lead (a detune LFO per voice, wow per part) */
+#endif
 #if FELUCCA_ADPCM
 #include "eng_adpcm.c"           /* ADPCM: BRR waves and an FIR echo, its DSP ported from snes_spc (adpcm_dsp.c, LGPL-2.1+) */
 #endif
@@ -72,6 +75,9 @@ static const engine_t *const ENGINES[NENGINES] = {
 #endif
 #if FELUCCA_ADPCM
     &ENG_ADPCM,                  /* 14 (ENGI_ADPCM; FELUCCA_ADPCM=0 builds without it) */
+#endif
+#if FELUCCA_DRIFT
+    &ENG_DRIFT,                  /* 14 (ENGI_DRIFT; DAYV-X) */
 #endif
 };
 
@@ -135,6 +141,9 @@ static const uint8_t ENGINE_ORDER[NENG_SHOWN] = {
     10,                          /* DRUM */
 #if FELUCCA_ADPCM
     14,                          /* ADPCM (1.8): last, so the EDIT layer's white keys keep the 13 above (ui_layer.c LY_ENG_KEYS) */
+#endif
+#if FELUCCA_DRIFT
+    14,                          /* DRIFT (DAYV-X): last for now, as ADPCM is: the EDIT layer's keys stay as they are */
 #endif
 };
 

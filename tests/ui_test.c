@@ -4127,7 +4127,7 @@ static int test_quick_layers(void)
     }
     btn_up(B_EDIT); frame();
     bad += check("  the first 13 engines in PRESETS order have their white keys from F3 (ADPCM, the 14th, only with ENG; never DIGITAL)",
-                 ok && a == LY_INIT && LY_INIT == NENG_SHOWN - FELUCCA_ADPCM);
+                 ok && a == LY_INIT && LY_INIT == NENG_SHOWN - FELUCCA_ADPCM - FELUCCA_DRIFT);
     set_engine_of(TSEL, 0);
     lay_combo(B_EDIT, white(eng_rank(3))); key_up(white(eng_rank(3))); frame();
     turn(EN_K2, 1);
@@ -5119,12 +5119,15 @@ static int test_fm4_retired(void)
     }
     bad += check("PRESETS KNOB 2: the engines in order, DIGITAL skipped, back to the first",
                  seen == all && TSEL->eng_req == 0u && eng_step(0, 1) == ENGI_FM6 && eng_step(ENGI_FM6, 1) == 2u &&
-                 eng_step(ENGI_FM6, -1) == 0u && eng_step(0, -1) == (FELUCCA_ADPCM ? ENGI_ADPCM : ENGI_DRUM));
+                 eng_step(ENGI_FM6, -1) == 0u && eng_step(0, -1) == (FELUCCA_ADPCM || FELUCCA_DRIFT ? 14u : ENGI_DRUM));
     {   /* the display order (engines.c ENGINE_ORDER): every engine one can pick once; the PRESETS list follows it */
         static const char *const ORDER[] = {"ANALOG", "FM6", "PHASE", "LOFI", "SAMPLE", "VOICE", "TRIO", "WHEEL", "GRAIN",
                                             "PHYS", "NOISE", "SLICE", "DRUM",
 #if FELUCCA_ADPCM
                                             "ADPCM",
+#endif
+#if FELUCCA_DRIFT
+                                            "DRIFT",      /* DAYV-X: engine 14, last as ADPCM is */
 #endif
         };
         uint32_t last = 0xFFu, r = 0, n = 0;
