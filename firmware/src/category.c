@@ -33,11 +33,12 @@ static const char *const PRESET_CAT[16] = {
                                   * STRING, HARP */
     "DDDDD",                     /* 10 DRUM: DRUM KIT; 1.5.6: DEEP KIT, TIGHT KIT, PERC KIT; DAYV-X: DUST KIT */
     "FFFF",                      /* 11 NOISE: WIND, RAIN, ARCADE, METAL */
-    "KUBLPUKU",                  /* 12 FM6: TINE EP, BELL, FM BASS, BRASS, PAD, MARIMBA, ORGAN, PLUCK */
+    "KUBLPUKUUUUKB",             /* 12 FM6: TINE EP, BELL, FM BASS, BRASS, PAD, MARIMBA, ORGAN, PLUCK; DAYV-X: HAZE BELL,
+                                  * MUSICBOX, GLASSY, TV CHIME, SLAP BASS */
     "DD",                        /* 13 SLICE: CHOP, STUTTER */
 #if defined(FELUCCA_DRIFT) && FELUCCA_DRIFT
-    "PPKLPLBP",                  /* 14 DRIFT (DAYV-X): SUNFADE, OLD FILM, TV KEYS, WARBLE, DUSK PAD, HAZE LD, SUB DRFT,
-                                  * REEL STR */
+    "PPKLPLBPBB",                /* 14 DRIFT (DAYV-X): SUNFADE, OLD FILM, TV KEYS, WARBLE, DUSK PAD, HAZE LD, SUB DRFT,
+                                  * REEL STR, ACID SAW, ACID SQR */
 #else
     "LLBBKKPD",                  /* 14 ADPCM: SQUARE LEAD, PULSE LEAD, SAW BASS, SUB BASS, SOFT SINE, ORGAN, ECHO PAD,
                                   * NOISE HAT */

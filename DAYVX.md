@@ -15,6 +15,7 @@ DAYV-X problems to this repository, not to Felucca.
 | `firmware/src/eng_drift.c` | DRIFT: the pad / lead engine (two oscillators, sub, low-pass; a fixed pitch offset per note, a detune LFO per voice (DRFT its depth, RATE its speed), wow and flutter per part). Engine 14, last in the PRESETS order, picked with the ENG knob |
 | `firmware/src/age.c` | AGE: the master's tape stage, on the FX button's AGE page. WEAR (wow, flutter, saturation, treble roll-off, dropouts; 0 = off, the mix untouched) and HISS |
 | `firmware/src/drum_voice.c`, `eng_drum.c` | DUST: a ninth model kit of the DRUM engine (KIT DUST, the preset DUST KIT): dull, soft drums. GRIT, on every kit: the lanes held at a lower rate with fewer bits (it takes the place of Felucca's KICK knob; the round kick is note 35) |
+| `firmware/src/eng_fm6.c`, `eng_drift.c` | Presets: HAZE BELL, MUSICBOX, GLASSY, TV CHIME, SLAP BASS (FM6's factory patches through its macros); ACID SAW, ACID SQR (DRIFT, DTN 0: its two oscillators start as one) |
 | `tests/dayvx/age_host.c` | AGE alone on a computer: pitch, level, roll-off and hiss cases against `age_golden.txt` |
 | `tests/dayvx/drift_host.c`, `run.sh` | DRIFT on a computer: `WAV=out sh tests/dayvx/run.sh` writes one WAV per preset |
 | `.github/workflows/dayvx-build.yml` | every push: the firmware package built on GitHub (artifact `packages`), and the DRIFT host test |

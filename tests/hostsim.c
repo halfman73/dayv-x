@@ -881,8 +881,11 @@ int main(int argc, char **argv)
         int nt, k, c = 0;
         while (c < NSTEP && sscanf(s, "%d%n", &nt, &k) == 1) {
             uint8_t u = (uint8_t)nt;
-            put_step(&inst, (uint32_t)c++, nt ? 1u : 0u, &u, nt ? ST_NOTE : ST_REST, 0);
+            uint8_t fl = 0;
             s += k;
+            for (; *s == 'a' || *s == 's'; s++)         /* (DAYV-X) 45a: accented, 45s: slides into the next, 45as */
+                fl |= (uint8_t)(*s == 'a' ? SF_ACCENT : SF_SLIDE);
+            put_step(&inst, (uint32_t)c++, nt ? 1u : 0u, &u, nt ? ST_NOTE : ST_REST, fl);
             if (*s == ',')
                 s++;
         }

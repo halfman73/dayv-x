@@ -415,6 +415,12 @@ static const preset_t FM6_PRESETS[] = {
     {"MARIMBA", {0, 0, 0, 0, 0, 0, 0, 5}, {0, 0, 127, 0}, 0, 0, FX(0, 0, 25, 40), PAT(3)},
     {"ORGAN", {0, 0, 0, 0, 0, 0, 0, 6}, {0, 0, 127, 0}, 0, 0, FX(10, 40, 0, 30), PAT(6)},
     {"PLUCK", {0, 0, 0, 0, 0, 0, 0, 7}, {0, 0, 127, 0}, 0, 0, FX(0, 20, 35, 30), PAT(13)},
+    /* DAYV-X: the factory patches through the macros {ALG, FB, MLVL, MRAT, MEG, VMOD, DTUN, SLOT} */
+    {"HAZE BELL", {0, 0, -8, 0, 12, 0, 55, 1}, {0, 0, 127, 0}, 0, 0, FX(0, 35, 35, 75), PAT(7)},   /* BELL, softer, spread */
+    {"MUSICBOX", {0, 0, 8, 4, -10, 0, 24, 5}, {0, 0, 127, 0}, 0, 0, FX(0, 15, 30, 55), PAT(3)},     /* MARIMBA, higher partials */
+    {"GLASSY", {0, 2, 8, 1, 0, 0, 22, 1}, {0, 0, 127, 0}, 0, 0, FX(0, 10, 40, 60), PAT(7)},        /* BELL, brighter, metallic */
+    {"TV CHIME", {0, 0, -16, 0, 18, 0, 60, 0}, {0, 0, 127, 0}, 0, 0, FX(0, 50, 25, 45), PAT(6)},   /* TINE EP, dull, wide */
+    {"SLAP BASS", {0, 5, 24, 1, -20, 3, 0, 2}, {0, 0, 127, 0}, 0, 1, FX(10, 0, 10, 8), PAT(2)},    /* FM BASS, hard, short */
 };
 
 static const engine_t ENG_FM6 = {
