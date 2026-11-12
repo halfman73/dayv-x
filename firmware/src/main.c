@@ -48,7 +48,12 @@ static void fm1_fault(const fm1_crash_t *c)
     fm1_reboot();
 }
 
-/* power-on: the parts with their default sounds (TRK_DEF); the sequencers empty */
+/* DAYV-X: the parts at power-on (engine, preset): bass DRIFT ACID SAW, pad DRIFT SUNFADE, lead FM6 HAZE BELL, drums
+ * DRUM DUST KIT. TRK_DEF (engines.c) stays Felucca's: project.c reads it for projects of old formats, and the host
+ * tests start from it */
+static const uint8_t DAYVX_BOOT[NPART][2] = {{ENGI_DRIFT, 8}, {ENGI_DRIFT, 0}, {ENGI_FM6, 8}, {ENGI_DRUM, 4}};
+
+/* power-on: the parts with their default sounds (DAYVX_BOOT); the sequencers empty */
 static void felucca_init(void)
 {
     uint32_t i;
@@ -60,8 +65,8 @@ static void felucca_init(void)
     for (i = 0; i < NTRK; i++) {
         track_t *t = &trk[i];
         track_defaults(t);
-        set_engine_of(t, TRK_DEF[i][0]);
-        apply_preset_to(t, TRK_DEF[i][1]);    /* with its sends */
+        set_engine_of(t, DAYVX_BOOT[i][0]);
+        apply_preset_to(t, DAYVX_BOOT[i][1]); /* with its sends */
         t->engine = t->eng_req;
         eng_mem_claim(t);                     /* (zeros already: no note can come before) */
         track_defaults_steps(t);              /* (a sound load never touches them) */

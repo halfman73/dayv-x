@@ -149,8 +149,8 @@ static const preset_t DRIFT_PRESETS[] = {
     {"SUB DRFT", {2, 4, 35, 30, 44, 20, 90, 25}, {0, 60, 100, 30}, 15, 1, FX(0, 0, 10, 10), PAT(2)},
     {"REEL STR", {1, 20, 80, 45, 66, 15, 10, 70}, {75, 90, 110, 95}, 6, 0, FX(0, 60, 20, 75), PAT(5)},
     /* the acid basses: one oscillator's worth (DTN 0), a resonant filter the envelope and the accents open, slides */
-    {"ACID SAW", {0, 0, 6, 30, 50, 100, 0, 8}, {0, 55, 20, 30}, 48, 1, FX(20, 0, 45, 15), PAT(1)},
-    {"ACID SQR", {1, 0, 6, 30, 54, 96, 20, 8}, {0, 50, 15, 25}, 52, 1, FX(24, 0, 40, 12), PAT(1)},
+    {"ACID SAW", {0, 0, 6, 30, 50, 100, 0, 8}, {0, 55, 20, 30}, 48, 1, FX(20, 0, 45, 15), PAT(16)},
+    {"ACID SQR", {1, 0, 6, 30, 54, 96, 20, 8}, {0, 50, 15, 25}, 52, 1, FX(24, 0, 40, 12), PAT(16)},
 };
 
 static const engine_t ENG_DRIFT = {

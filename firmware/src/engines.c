@@ -204,6 +204,15 @@ static const struct {
      * now that the arpeggiator is the track's and a preset no longer switches it on */
     {"ARP", {48, 51, 55, 60, 63, 67, 72, 75, 48, 51, 55, 60, 63, 67, 72, 75},       /* 13 */
      {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}},
+    /* DAYV-X (appended) */
+    {"DUSTBEAT", {36, 0, 42, 36, 38, 0, 42, 0, 0, 36, 42, 0, 38, 0, 42, 46},         /* 14 DRUM: a slow, leaning beat */
+     {1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}},
+    {"BROKEN", {36, 42, 38, 36, 42, 38, 0, 36, 38, 42, 36, 38, 37, 38, 36, 38},      /* 15 DRUM: a busy break */
+     {1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1}},
+    {"SQUELCH", {33, 33, 45, 33, 0, 36, 33, 43, 33, 0, 45, 40, 33, 36, 0, 38},       /* 16 the acid basses */
+     {1, 0, 2, 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 1, 0, 2}},
+    {"CHIMES", {72, 0, 79, 76, 0, 84, 79, 0, 72, 76, 0, 79, 84, 0, 76, 0},           /* 17 the bells */
+     {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}},
 };
 #undef T_
 #define NPATTERNS (sizeof PATTERNS / sizeof PATTERNS[0])
