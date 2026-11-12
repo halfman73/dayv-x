@@ -861,6 +861,8 @@ int main(int argc, char **argv)
         host_preset(&inst, (uint32_t)eng, (uint32_t)preset);
     if (getenv("SENDS"))                                 /* SENDS=chorus,delay,reverb */
         sscanf(getenv("SENDS"), "%hd,%hd,%hd", &inst.p[P_CHOR], &inst.p[P_DLY], &inst.p[P_REV]);
+    if (getenv("AGE"))                                   /* AGE=wear,hiss (DAYV-X: the master's tape stage, age.c) */
+        sscanf(getenv("AGE"), "%hd,%hd", &song.g[G_DRLVL], &song.g[G_DRREV]);
     if (getenv("OCT"))                                   /* OCT=o: keyboard octave shift (key 7 = C4 + 12 o) */
         song.octave = (int8_t)atoi(getenv("OCT"));
     if (getenv("PSET")) {                               /* PSET=id:value,... (track parameter ids, P_E0 = 61) */

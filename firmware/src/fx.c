@@ -1035,6 +1035,8 @@ static uint32_t mix_split(void)
 }
 #endif
 
+#include "age.c"                 /* DAYV-X: AGE, the master's tape stage (age_block) */
+
 static void mix_block(int32_t *out, uint32_t n)
 {
     uint32_t i;
@@ -1075,6 +1077,8 @@ static void mix_block(int32_t *out, uint32_t n)
     fx_buses(send_c, send_d, send_r, wet, n);
     if (hl.side)
         rev_side_mix(mix_l, mix_r, n);                  /* HALL: stereo */
+    if (song.g[G_WEAR] > 0 || song.g[G_HISS] > 0)
+        age_block(mix_l, mix_r, wet, n);                /* DAYV-X: AGE (nothing at 0 / 0: the mix as it was) */
     if (scope_mix)
         scope_take_mix(n);
     if (perf) {

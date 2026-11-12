@@ -1,0 +1,10 @@
+age/sine_w0 5efd41d94d6beb69 8192 untouched
+age/sine_w32 0650927cc353100d 8267
+age/sine_w64 413471a3c93882b1 8307
+age/sine_w100 73c1dc403b8d3dd5 8186
+age/sine_w127 a1544a882aef99c1 7977
+age/noise_w0 b743d33a46108dd5 8192 untouched
+age/noise_w64 55c024b4902f5019 7917
+age/noise_w127 9db5b8970917e615 6932
+age/silence_h127 5748e5de50c373bf 508
+age/silence_w64_h127 bf2de76aeb61f721 508
