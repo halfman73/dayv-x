@@ -19,5 +19,5 @@ DAYV-X problems to this repository, not to Felucca.
 | `.github/workflows/dayvx-build.yml` | every push: the firmware package built on GitHub (artifact `packages`), and the DRIFT host test |
 | `.github/workflows/dayvx-release.yml` | a tag `vX.Y`: the release package, attested |
 
-Until the identity is changed in `tools/build.py` (`PRODUCT`), builds report Felucca's development identity
-`FM-1_900`.
+Identity: `FM-1_947` (development and release builds alike), version `v0.1`. The package is `build/dayv-x.fwsc`.
+The update loader still reports `ota-FM-1_900` while an update runs, as Felucca's does.
