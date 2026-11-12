@@ -76,7 +76,7 @@ enum {
 };
 /* a lane of a model kit as a type: the kit (1..DV_NKIT) in the high 4 bits, the lane in the low 3 (Felucca's own
  * types: 0 above). Its run (the DVT_* it plays through) is the kit's (DV_KIT) */
-#define DV_NKIT 8                                        /* (1.5.6, #216: DEEP TIGHT PERC after 77) */
+#define DV_NKIT 9                                        /* (1.5.6, #216: DEEP TIGHT PERC after 77; DAYV-X: DUST) */
 #define DV_KITOF(t) ((uint32_t)(t) >> 4)
 #define DV_KTYPE(kit, lane) ((uint8_t)(((kit) << 4) | (lane)))
 
@@ -187,7 +187,7 @@ typedef struct {
     int16_t v[13];
 } dv_kit_t;
 /* the accent per kit: + (x / 16384) per accent step (75: +4 dB at full, as Felucca's own) */
-static const uint8_t DV_KIT_ACC[DV_NKIT] = {120, 45, 100, 40, 40, 80, 60, 70};
+static const uint8_t DV_KIT_ACC[DV_NKIT] = {120, 45, 100, 40, 40, 80, 60, 70, 60};
 static const dv_kit_t DV_KIT[DV_NKIT][DV_NLANE] = {
     {   /* 80 */
         /* deep sine, a small drop, long decay */
@@ -329,6 +329,24 @@ static const dv_kit_t DV_KIT[DV_NKIT][DV_NLANE] = {
         {DVT_CLAVE, 32, 1568, 149, 2131, {84, 28000, 10000, 6348, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
         /* 66's bell: sines 830 / 613 Hz */
         {DVT_RIM, 40, 1280, 60, 3629, {-84, 30000, 7500, 4096, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+    },
+    {   /* DUST (DAYV-X): a dull, soft kit for worn-tape beats. The kits' runs with its own numbers: lower noise
+         * bands, softer transients, short hats. eng_drum.c adds its grit (a 14.7 kHz hold, 10 bits) */
+        /* 59 Hz swept from 90, a soft click, a little drive, tau ~110 ms */
+        {DVT_PUNCH, 60, 547, 170, 3430, {120, 150, 0, 0, 0, 1233, 1400, 5600, 0, 0, 0, 0, 0}},
+        /* a 207 Hz shell with more body, noise around 3.5 kHz, a softer spike */
+        {DVT_SNARE, 40, 910, 120, 5600, {0, 26, 180, 64, 0, 14000, 1600, 5000, 100, 20000, 26000, 0, 1700}},
+        /* band 880 Hz, 3 loose teeth, more tail */
+        {DVT_CLAP, 48, 1300, 260, 12000, {0, 4096, 1600, 0, 3500, 30000, 35, 520, 3, 0, 0, 0, 0}},
+        /* noise through a band at 5.4 kHz, short */
+        {DVT_HATC, 45, 1700, 130, 12500, {1700, 3000, 1560, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
+        {DVT_HATO, 63, 1700, 300, 10600, {1700, 3000, 1560, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
+        /* a low tom 142 Hz, a dull stick */
+        {DVT_TOM, 53, 790, 200, 4091, {21, 600, 1400, 5000, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        /* a rim at 1.2 kHz */
+        {DVT_RIM, 32, 1380, 16, 8636, {304, 26000, 1000, 4096, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        /* a two-sine blip, 830 / 600 Hz, a longer ring: half a melody */
+        {DVT_RIM, 40, 1280, 90, 2980, {-90, 30000, 7500, 4096, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
     },
 };
 
