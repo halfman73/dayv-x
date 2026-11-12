@@ -570,16 +570,21 @@ static void keys(void)
 {
     /* the first C (key 7) is the GM kick: key -> drum under KIT STD (KICK PUNCH, ROUND) */
     static const uint8_t KEY[8] = {7, 8, 9, 10, 12, 13, 17, 24};   /* C C# D D# F F# A# F */
+    /* (DAYV-X: E6 is GRIT, any value plays the same drums; the round kick is note 35, GM's other kick) */
     static const uint8_t WANT[2][8] = {
         {DVT_PUNCH, DVT_RIM, DVT_SNARE, DVT_CLAP, DVT_TOM, DVT_HATC, DVT_HATO, DVT_BELL},
-        {DVT_ROUND, DVT_RIM, DVT_SNARE, DVT_CLAP, DVT_TOM, DVT_HATC, DVT_HATO, DVT_BELL},
+        {DVT_PUNCH, DVT_RIM, DVT_SNARE, DVT_CLAP, DVT_TOM, DVT_HATC, DVT_HATO, DVT_BELL},
     };
     uint32_t v, i, bad = 0;
     host_tracks_init();
     host_preset(&trk[0], ENGI_DRUM, 0);
     song.octave = 0;
+    {
+        int32_t st;
+        bad += drum_gm(trk[0].p, 35u, &st) != DVT_ROUND || drum_gm(trk[0].p, 36u, &st) != DVT_PUNCH;
+    }
     for (v = 0; v < 2u; v++) {
-        trk[0].p[P_E6] = (int16_t)v;                    /* KICK: PUNCH / ROUND */
+        trk[0].p[P_E6] = (int16_t)(v * 100u);           /* GRIT 0 / 100 */
         trk[0].p[P_E0] = DK_STD;
         for (i = 0; i < 8u; i++) {
             int32_t st, n = drum_keys(&trk[0], KEY[i]);
@@ -916,8 +921,8 @@ static const float KTGT[DV_NKIT][DV_NLANE][2] = {
      {0.500, 13024}, {0.200, 3480}, {0.010, 2421}, {0.220, 1590}},
     {{0.620, 1863}, {0.120, 4518}, {0.230, 5906}, {0.210, 9473},   /* PERC: 10 77 77 66 66 66 77 66 */
      {0.270, 9422}, {0.110, 1379}, {0.110, 3517}, {0.050, 1274}},
-    {{0.240, 656}, {0.100, 5411}, {0.180, 4416}, {0.120, 7092},   /* DUST (DAYV-X): its own numbers, measured */
-     {0.420, 7067}, {0.230, 1644}, {0.020, 2017}, {0.080, 1233}},
+    {{0.240, 656}, {0.100, 5411}, {0.180, 4416}, {0.130, 7837},   /* DUST (DAYV-X): its own numbers, measured */
+     {0.420, 7817}, {0.230, 1644}, {0.020, 2017}, {0.080, 1233}},
 };
 static const float KLVL[DV_NLANE] = {-14.5f, -18.2f, -24.2f, -27.4f, -23.8f, -13.6f, -22.5f, -21.0f};
 

@@ -331,16 +331,16 @@ static const dv_kit_t DV_KIT[DV_NKIT][DV_NLANE] = {
         {DVT_RIM, 40, 1280, 60, 3629, {-84, 30000, 7500, 4096, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
     },
     {   /* DUST (DAYV-X): a dull, soft kit for worn-tape beats. The kits' runs with its own numbers: lower noise
-         * bands, softer transients, short hats. eng_drum.c adds its grit (a 14.7 kHz hold, 10 bits) */
+         * bands, softer transients, short thin hats. Its preset DUST KIT sets GRIT (eng_drum.c) to 80 */
         /* 59 Hz swept from 90, a soft click, a little drive, tau ~110 ms */
         {DVT_PUNCH, 60, 547, 170, 3430, {120, 150, 0, 0, 0, 1233, 1400, 5600, 0, 0, 0, 0, 0}},
         /* a 207 Hz shell with more body, noise around 3.5 kHz, a softer spike */
         {DVT_SNARE, 40, 910, 120, 5600, {0, 26, 180, 64, 0, 14000, 1600, 5000, 100, 20000, 26000, 0, 1700}},
         /* band 880 Hz, 3 loose teeth, more tail */
         {DVT_CLAP, 48, 1300, 260, 12000, {0, 4096, 1600, 0, 3500, 30000, 35, 520, 3, 0, 0, 0, 0}},
-        /* noise through a band at 5.4 kHz, short */
-        {DVT_HATC, 45, 1700, 130, 12500, {1700, 3000, 1560, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
-        {DVT_HATO, 63, 1700, 300, 10600, {1700, 3000, 1560, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
+        /* noise through a narrow band near 5.5 kHz over a 3.8 kHz high-pass: thin, short */
+        {DVT_HATC, 45, 1780, 130, 9300, {1780, 2200, 1700, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
+        {DVT_HATO, 63, 1780, 300, 8100, {1780, 2200, 1700, 2042, 0, 0, 7000, 3, 6, 0, 0, 0, 0}},
         /* a low tom 142 Hz, a dull stick */
         {DVT_TOM, 53, 790, 200, 4091, {21, 600, 1400, 5000, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
         /* a rim at 1.2 kHz */

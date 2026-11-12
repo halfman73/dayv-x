@@ -14,7 +14,7 @@
  * cymbals) or a model kit (80 10 66 55 77, 1.5.6 DEEP TIGHT PERC: every lane that kit's own piece, drum_voice.c DV_KIT; KICK does not
  * apply). Its stored values 1..3 were HAND CYM H+CYM (STD with CONGA CLAVE / CYM on lanes 6..8) until 1.0.4: they
  * play 66 10 77 now (DK_PLAYS), and whatever stores them lands there (params.c enum_orig, param_fit: the knob
- * steps over them, the editor's SET, projects, user presets, motion). KICK the kick (PUNCH, ROUND). TUNE (64: as
+ * steps over them, the editor's SET, projects, user presets, motion). GRIT (DAYV-X; Felucca's KICK made way) a low-rate, low-bit hold. TUNE (64: as
  * designed, +-12 semitones), TONE, DECY and SNAP (each lane's extra: the kick's drive, the snare's snappiness,
  * the clap's spread, the hats' noise, the toms' bend, the rim's drive, the bell's strike) move every lane from its designed value. ACC
  * is the accent at full velocity (velocity scales it), DRV a soft clip on every hit (x1..x4, level kept).
@@ -39,7 +39,7 @@
 /* 1.5.6 (Discussion #216): DEEP TIGHT PERC (9..11), kits put together from the five's pieces (drum_voice.c DV_KIT),
  * appended. Firmware before 1.5.6 clamps 9..11 to 8 (77) when it loads them (param_fit) */
 enum { DK_STD, DK_HAND, DK_CYM, DK_HCYM, DK_80, DK_10, DK_66, DK_55, DK_77, DK_DEEP, DK_TIGHT, DK_PERC,
-       DK_DUST,                  /* DAYV-X (12): drum_voice.c DV_KIT's last, and its grit (drum_render) */
+       DK_DUST,                  /* DAYV-X (12): drum_voice.c DV_KIT's last */
        DK_COUNT };   /* (stored values) */
 /* the kit a stored KIT value plays: HAND CYM H+CYM (retired after 1.0.4) -> 66 (a conga on TOM), 10 (a cymbal on
  * BELL), 77 (claves on RIM, a cymbal on BELL) */
@@ -61,7 +61,8 @@ typedef struct {
     uint8_t owner;               /* the voice playing the lane: index + 1, 0 = none */
     uint8_t role;                /* the drum struck (DVT_*) */
     int8_t st;                   /* its semitones from the designed pitch (the GM map) */
-    uint8_t hold_n;              /* DAYV-X, KIT DUST: the grit's hold, samples into it */
+    uint8_t pad;
+    uint32_t hold_ph;            /* DAYV-X, GRIT: the hold's phase (Q16: a new sample at each carry) */
     int32_t hold;                /* .. and the sample held */
 } drum_lane_t;
 
@@ -74,7 +75,6 @@ static uint8_t drum_mute[NPART];
 
 /* 1..3 named as the kit they play: aliases, never shown or offered (EDITOR_PROTOCOL.md: retired values) */
 static const char *const N_DRUM_KIT[] = {"STD", "66", "10", "77", "80", "10", "66", "55", "77", "DEEP", "TIGHT", "PERC", "DUST"};
-static const char *const N_DRUM_KICK[] = {"PUNCH", "ROUND"};
 
 /* General MIDI notes 35..81 -> the drum (DVT_*; DVT_PUNCH: the kick KICK picks) and semitones from its
  * designed pitch */
@@ -97,7 +97,8 @@ static uint32_t drum_gm(const int16_t *p, uint32_t note, int32_t *st)
     *st = DRUM_GM[n - 35u][1];
     if (kit >= DK_80)
         return DV_KTYPE(kit - DK_80 + 1u, DV_TYPE_LANE[t]);
-    return t == DVT_PUNCH && p[P_E6] > 0 ? DVT_ROUND : t;
+    return t == DVT_PUNCH && note == 35u ? DVT_ROUND : t;   /* (DAYV-X: the round kick is GM's other kick, note 35;
+                                                              * Felucca's KICK knob made way for GRIT) */
 }
 
 /* ----------------------------------------------------- the grid's lanes --- */
@@ -299,14 +300,21 @@ static void drum_render(track_t *t, voice_t *v, int32_t *out, uint32_t n, const 
     dv_run(&L->c, &L->v, mb, y, n);
     if ((drum_mute[(uint32_t)(t - trk) % NPART] >> ((uint32_t)v->s[0] & (DV_NLANE - 1u))) & 1u)
         return;                                          /* (a muted lane rings on unheard) */
-    if (drum_kit_plays(p[P_E0]) == DK_DUST) {            /* DAYV-X: DUST's grit, an early sampler's converters: every
-                                                          * third sample held (14.7 kHz, its images left in), 10 bits */
+    if (p[P_E6] > 0) {                                   /* DAYV-X: GRIT, an early sampler's converters. The lane is
+                                                          * sampled again at a lower rate and held (44.1 kHz down to
+                                                          * 7.7 kHz at 127, its images left in) and loses bits (16 down
+                                                          * to 7). 80, the DUST kit's: every third sample, 10 bits */
+        uint32_t g = (uint32_t)clamp(p[P_E6], 0, 127);
+        uint32_t rate = 0xFFFFFFFFu / dv_exp2(g * 81u);  /* Q16: 2^-(g * 81 / 4096) */
+        uint32_t sh = g * 3u / 40u;
+        int32_t half = sh ? 1 << (sh - 1u) : 0, mask = ~((1 << sh) - 1);
         for (i = 0; i < n; i++) {
-            if (!L->hold_n) {
+            L->hold_ph += rate;
+            if (L->hold_ph >= 65536u) {
                 int32_t s = y[i];
-                L->hold = s >= 0 ? (s + 32) & ~63 : -((32 - s) & ~63);
+                L->hold_ph -= 65536u;
+                L->hold = s >= 0 ? (s + half) & mask : -((half - s) & mask);
             }
-            L->hold_n = (uint8_t)(L->hold_n == 2u ? 0u : L->hold_n + 1u);
             y[i] = L->hold;
         }
     }
@@ -329,14 +337,14 @@ static int32_t drum_keys(const track_t *t, uint32_t k)
     return clamp(29 + 12 * song.octave + (int32_t)k, 0, 127);
 }
 
-/* {KIT, TUNE, TONE, DECY, SNAP, ACC, KICK, DRV}; every kit suggests the BEAT pattern (GM notes) */
+/* {KIT, TUNE, TONE, DECY, SNAP, ACC, GRIT, DRV}; every kit suggests the BEAT pattern (GM notes) */
 static const preset_t DRUM_PRESETS[] = {
     {"DRUM KIT", DRUM_KIT_E, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 20), PAT(12)},   /* (core.h: SAMPLE PERC's too) */
     /* 1.5.6 (Discussion #216): the new kits, appended */
     {"DEEP KIT", {DK_DEEP, 64, 64, 64, 64, 100, 0, 0}, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 28), PAT(12)},
     {"TIGHT KIT", {DK_TIGHT, 64, 64, 56, 64, 100, 0, 16}, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 8), PAT(12)},
     {"PERC KIT", {DK_PERC, 64, 64, 64, 64, 100, 0, 0}, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 24), PAT(12)},
-    {"DUST KIT", {DK_DUST, 64, 64, 64, 64, 90, 0, 24}, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 14), PAT(12)},   /* DAYV-X */
+    {"DUST KIT", {DK_DUST, 64, 64, 64, 64, 90, 80, 24}, {0, 100, 127, 100}, 0, 0, FX(0, 0, 0, 14), PAT(12)},   /* DAYV-X */
 };
 
 static const engine_t ENG_DRUM = {
@@ -349,7 +357,7 @@ static const engine_t ENG_DRUM = {
         {"DECY", F_PCT, 0, 127, 64, 0, 0},
         {"SNAP", F_PCT, 0, 127, 64, 0, 0},
         {"ACC", F_PCT, 0, 127, 100, 0, 0},
-        {"KICK", F_ENUM, 0, 1, 0, N_DRUM_KICK, 0},
+        {"GRIT", F_PCT, 0, 127, 0, 0, 0},        /* DAYV-X (Felucca: KICK, PUNCH / ROUND) */
         {"DRV", F_PCT, 0, 127, 0, 0, 0},
     },
     .presets = DRUM_PRESETS,

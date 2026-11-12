@@ -865,7 +865,7 @@ int main(int argc, char **argv)
         sscanf(getenv("AGE"), "%hd,%hd", &song.g[G_DRLVL], &song.g[G_DRREV]);
     if (getenv("OCT"))                                   /* OCT=o: keyboard octave shift (key 7 = C4 + 12 o) */
         song.octave = (int8_t)atoi(getenv("OCT"));
-    if (getenv("PSET")) {                               /* PSET=id:value,... (track parameter ids, P_E0 = 61) */
+    if (getenv("PSET")) {                               /* PSET=id:value,... (track parameter ids, P_E0 = 106) */
         const char *s = getenv("PSET");
         int id, val, k;
         while (sscanf(s, "%d:%d%n", &id, &val, &k) == 2) {
