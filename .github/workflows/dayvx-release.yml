@@ -11,5 +11,5 @@ jobs:
       id-token: write
       attestations: write
     with:
-      build: git submodule update --init && ./build.sh --release "${GITHUB_REF_NAME#v}"
+      build: python3 -m pip install fonttools && git submodule update --init && ./build.sh --release "${GITHUB_REF_NAME#v}"
       packages: build/*.fwsc
