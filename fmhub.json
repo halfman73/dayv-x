@@ -3,5 +3,6 @@
   "author": "Repoman",
   "kinds": ["groove", "synth"],
   "image": "docs/dayvx-card.png",
-  "color": "#68B6AC"
+  "color": "#68B6AC",
+  "sounds": "CC0: Versilian Studios (Sam Gossner), VSCO-2 Community Edition and VCSL; bundled with Felucca, listed in assets/samples-cc0/ATTRIBUTION.txt"
 }
